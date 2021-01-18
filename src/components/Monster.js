@@ -19,39 +19,29 @@ const shuffle = array => {
 };
 
 let once = true;
-let count = 2;
+let count = 5;
 
 export const moveMonsters = monsters =>
-	monsters.map(monster => {
+	monsters.map((monster, i) => {
+		// if (i === 0) {
+		// 	debugger;
+		// }
 		const nextMonster = { ...monster };
 		const current = movingDirection(nextMonster.tween, nextMonster.prevTween);
-		if (count > 0) {
-			count--;
-			console.log(nextMonster.tween);
-			console.log(current);
-		}
 		const turnCoefficient = 0.1;
 		const reverseCoefficient = 0.01;
 		if (!current) {
-			const directions = shuffle(['up', 'down', 'left', 'right']);
-			for (const dir of directions) {
-				if (
-					positions.filter(pos =>
-						arrayEquals(pos, nextPositionFromDirection(dir, nextMonster.pos))
-					).length > 0
-				) {
-					nextMonster.next = nextPositionFromDirection(dir, nextMonster.pos);
-					nextMonster.tween = tweenFromDirection(dir, nextMonster.tween);
-					if (once) {
-						once = false;
-						console.log(nextMonster);
-					}
-					return nextMonster;
-				}
-			}
+			/* 	* First check if it hasn't moved from last turn,
+			 *	which would indicate the first frame
+			 * 	*/
+			// if (i === 0) {
+			// 	console.log(nextMonster);
+			// }
+			nextMonster.tween = tweenFromDirection('up', nextMonster.tween);
+			return nextMonster;
 		}
-		if (arrayEquals(monster.pos, monster.next)) {
-			const turn = Math.random() * turnCoefficient < 0.5;
+		if (current && arrayEquals(monster.pos, monster.next)) {
+			const turn = Math.random() * turnCoefficient > 0.5;
 			if (!turn) {
 				if (
 					positions.filter(pos =>
@@ -87,13 +77,13 @@ export const moveMonsters = monsters =>
 				}
 			}
 		}
-		const reverse = Math.random() * reverseCoefficient < 0.5;
+		const reverse = Math.random() * reverseCoefficient > 0.5;
 		if (!reverse) {
-			nextMonster.prevTween = nextMonster.tween;
-			nextMonster.tween = tweenFromDirection(current, nextMonster.pos);
-			if (arrayEquals(nextMonster.tween, nextMonster.next)) {
-				nextMonster.pos = nextMonster.next;
-				nextMonster.next = nextPositionFromDirection(current, nextMonster.pos);
+			nextMonster.prevTween = monster.tween;
+			nextMonster.tween = tweenFromDirection(current, monster.pos);
+			if (arrayEquals(nextMonster.tween, monster.next)) {
+				nextMonster.pos = monster.next;
+				nextMonster.next = nextPositionFromDirection(current, monster.pos);
 			}
 			return nextMonster;
 		} else {
@@ -112,6 +102,87 @@ export const moveMonsters = monsters =>
 			}
 			return nextMonster;
 		}
+
+		// const current = movingDirection(nextMonster.tween, nextMonster.prevTween);
+		// const turnCoefficient = 0.1;
+		// const reverseCoefficient = 0.01;
+		// if (!current) {
+		// 	// nextMonster.tween = tweenFromDirection('up', nextMonster.tween);
+		// 	const directions = shuffle(['up', 'down', 'left', 'right']);
+		// 	for (const dir of directions) {
+		// 		if (
+		// 			positions.filter(pos =>
+		// 				arrayEquals(pos, nextPositionFromDirection(dir, nextMonster.pos))
+		// 			).length > 0
+		// 		) {
+		// 			nextMonster.next = nextPositionFromDirection(dir, nextMonster.pos);
+		// 			nextMonster.tween = tweenFromDirection(dir, nextMonster.tween);
+		// 			return nextMonster;
+		// 		}
+		// 	}
+		// }
+		// if (arrayEquals(monster.pos, monster.next)) {
+		// 	const turn = Math.random() * turnCoefficient > 0.5;
+		// 	if (!turn) {
+		// 		if (
+		// 			positions.filter(pos =>
+		// 				arrayEquals(
+		// 					pos,
+		// 					nextPositionFromDirection(current, nextMonster.pos)
+		// 				)
+		// 			).length > 0
+		// 		) {
+		// 			nextMonster.next = nextPositionFromDirection(
+		// 				current,
+		// 				nextMonster.pos
+		// 			);
+		// 			nextMonster.prevTween = nextMonster.tween;
+		// 			nextMonster.tween = tweenFromDirection(current, nextMonster.pos);
+		// 			return nextMonster;
+		// 		}
+		// 	} else {
+		// 		const directions = shuffle(
+		// 			['up', 'down', 'left', 'right'].filter(dir => dir !== current)
+		// 		);
+		// 		for (const dir of directions) {
+		// 			if (
+		// 				positions.filter(pos =>
+		// 					arrayEquals(pos, nextPositionFromDirection(dir, nextMonster.pos))
+		// 				).length > 0
+		// 			) {
+		// 				nextMonster.next = nextPositionFromDirection(dir, nextMonster.pos);
+		// 				nextMonster.prevTween = nextMonster.tween;
+		// 				nextMonster.tween = tweenFromDirection(dir, nextMonster.pos);
+		// 				return nextMonster;
+		// 			}
+		// 		}
+		// 	}
+		// }
+		// const reverse = Math.random() * reverseCoefficient > 0.5;
+		// if (!reverse) {
+		// 	nextMonster.prevTween = monster.tween;
+		// 	nextMonster.tween = tweenFromDirection(current, monster.pos);
+		// 	if (arrayEquals(nextMonster.tween, monster.next)) {
+		// 		nextMonster.pos = monster.next;
+		// 		nextMonster.next = nextPositionFromDirection(current, monster.pos);
+		// 	}
+		// 	return nextMonster;
+		// } else {
+		// 	const dir =
+		// 		current === 'up'
+		// 			? 'down'
+		// 			: current === 'right'
+		// 			? 'left'
+		// 			: current === 'left'
+		// 			? 'right'
+		// 			: 'up';
+		// 	nextMonster.prevTween = nextMonster.tween;
+		// 	nextMonster.tween = tweenFromDirection(current, nextMonster.pos);
+		// 	if (arrayEquals(nextMonster.tween, nextMonster.pos)) {
+		// 		nextMonster.next = nextPositionFromDirection(dir, nextMonster.pos);
+		// 	}
+		// 	return nextMonster;
+		// }
 	});
 
 const Monster = ({ pos, eaten }) => (

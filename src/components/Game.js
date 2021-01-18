@@ -3,45 +3,50 @@ import { timer } from 'd3-timer';
 import { useKeyPress } from '../hooks/useKeyPress';
 import { initialPlayer, initialMonsters, initialDots } from './GameBoard';
 import Player, { movePlayer } from './Player';
-import Dots from './Dots';
+import Dots, { checkDots } from './Dots';
 import Monster, { moveMonsters } from './Monster';
-import { arrayEquals } from '../utils/general';
+import Debugger from './Debugger';
+// import { tweenFromDirection } from '../utils/movement';
 
-const Game = ({ handleChangeScore, handleGameOver }) => {
+const Game = ({ onChangeScore, onGameOver }) => {
 	const [time, setTime] = useState(0);
-	const [player, setPlayer] = useState(initialPlayer);
-	const [monsters, setMonsters] = useState(initialMonsters);
-	const [dots, setDots] = useState(initialDots);
+	// const [player, setPlayer] = useState(initialPlayer);
+	// const [dots, setDots] = useState(initialDots);
+	// const [monsters, setMonsters] = useState(initialMonsters);
+	const [sprites, setSprites] = useState({
+		player: initialPlayer,
+		dots: initialDots,
+		monsters: initialMonsters,
+	});
 	const up = useKeyPress(38);
 	const down = useKeyPress(40);
 	const left = useKeyPress(37);
 	const right = useKeyPress(39);
 	const tickAnimation = () => {
-		setTime(time => time + 1);
+		if (time % 5 === 0) {
+			setTime(time => time + 5);
+		}
 	};
 	useEffect(() => {
-		let nextPlayer = movePlayer(up, down, left, right, player);
-		let nextDots = [...dots];
-		if (!arrayEquals(player.tween, nextPlayer.tween)) {
-			if (
-				dots
-					.filter(dot => !dot.eaten)
-					.map(dot => dot.pos)
-					.includes(nextPlayer.tween)
-			) {
-				nextDots = prev =>
-					prev.map(dot =>
-						arrayEquals(dot.pos, nextPlayer.tween)
-							? { ...dot, eaten: true }
-							: dot
-					);
-				handleChangeScore(10);
-			}
-		}
-		const nextMonsters = moveMonsters(monsters);
-		setPlayer(nextPlayer);
-		setMonsters(nextMonsters);
-		setDots(nextDots);
+		if (time > 1000) return; // ! Testing
+		const { player, dots, monsters } = sprites;
+		// const nextMonsters = [...monsters];
+		const nextPlayer = movePlayer(up, down, left, right, { ...player });
+		const nextDots = checkDots(nextPlayer.tween, [...dots], onChangeScore);
+		const nextMonsters = moveMonsters([...monsters]);
+		setSprites(prev => ({
+			...prev,
+			player: nextPlayer,
+			dots: nextDots,
+			monsters: nextMonsters,
+		}));
+		// setSprites({
+		// 	...sprites,
+		// 	monsters: nextMonsters.map(monster => ({
+		// 		...monster,
+		// 		tween: tweenFromDirection('up', monster.tween),
+		// 	})),
+		// });
 	}, [time]);
 	useEffect(() => {
 		const t = timer(tickAnimation);
@@ -49,6 +54,7 @@ const Game = ({ handleChangeScore, handleGameOver }) => {
 			t.stop();
 		};
 	}, []);
+	const { player, dots, monsters } = sprites;
 	return (
 		<>
 			<Player pos={player.tween} />
@@ -56,6 +62,20 @@ const Game = ({ handleChangeScore, handleGameOver }) => {
 			{monsters.map((monster, i) => (
 				<Monster pos={monster.tween} eaten={monster.eaten} key={i} />
 			))}
+			<Debugger>
+				{monsters.map((monster, i) => (
+					<Debugger.Wrap key={i}>
+						<Debugger.Text>Monster {i}</Debugger.Text>
+						{Object.entries(monster)
+							.filter(keyVal => keyVal[0] !== 'eaten')
+							.map((keyVal, j) => (
+								<Debugger.Text key={j}>
+									{keyVal[0]} {keyVal[1]}
+								</Debugger.Text>
+							))}
+					</Debugger.Wrap>
+				))}
+			</Debugger>
 		</>
 	);
 };

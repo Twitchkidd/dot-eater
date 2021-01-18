@@ -8,8 +8,6 @@ import {
 import { arrayEquals } from '../utils/general';
 import Sprite from './Sprite';
 
-let count = 50;
-
 export const movePlayer = (up, down, left, right, player) => {
 	const nextPlayer = { ...player };
 	const current = movingDirection(nextPlayer.tween, nextPlayer.prevTween);
@@ -46,9 +44,9 @@ export const movePlayer = (up, down, left, right, player) => {
 								pos,
 								nextPositionFromDirection(current, nextPlayer.pos)
 							)
-						)
+						).length > 0
 					) {
-						// * If the direction is valid
+						// * And the direction is valid
 						nextPlayer.next = nextPositionFromDirection(
 							current,
 							nextPlayer.pos
@@ -118,7 +116,8 @@ export const movePlayer = (up, down, left, right, player) => {
 		// * Or if no keys are down
 		if (!arrayEquals(nextPlayer.tween, nextPlayer.next)) {
 			// * If we're not at a junction
-			tweenFromDirection(current, nextPlayer.tween);
+			nextPlayer.prevTween = nextPlayer.tween;
+			nextPlayer.tween = tweenFromDirection(current, nextPlayer.tween);
 			if (arrayEquals(nextPlayer.tween, nextPlayer.next)) {
 				nextPlayer.pos = nextPlayer.next;
 				nextPlayer.next = nextPositionFromDirection(current, nextPlayer.pos);

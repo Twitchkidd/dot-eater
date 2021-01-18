@@ -28,7 +28,7 @@ const Game = ({ onChangeScore, onGameOver }) => {
 		}
 	};
 	useEffect(() => {
-		if (time > 1000) return; // ! Testing
+		if (time > 10000) return; // ! Testing
 		const { player, dots, monsters } = sprites;
 		// const nextMonsters = [...monsters];
 		const nextPlayer = movePlayer(up, down, left, right, { ...player });
@@ -62,7 +62,7 @@ const Game = ({ onChangeScore, onGameOver }) => {
 			{monsters.map((monster, i) => (
 				<Monster pos={monster.tween} eaten={monster.eaten} key={i} />
 			))}
-			<Debugger>
+			{/* <Debugger>
 				{monsters.map((monster, i) => (
 					<Debugger.Wrap key={i}>
 						<Debugger.Text>Monster {i}</Debugger.Text>
@@ -75,7 +75,7 @@ const Game = ({ onChangeScore, onGameOver }) => {
 							))}
 					</Debugger.Wrap>
 				))}
-			</Debugger>
+			</Debugger> */}
 		</>
 	);
 };

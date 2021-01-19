@@ -1,22 +1,11 @@
 import { positions } from './GameBoard';
 import {
-	nextPositionFromDirection,
+	nextFromDirection,
 	tweenFromDirection,
 	movingDirection,
 } from '../utils/movement';
-import { arrayEquals } from '../utils/general';
+import { arrayEquals, shuffle } from '../utils/general';
 import Sprite from './Sprite';
-
-// Fisher-Yates Shuffle Algorithm, an implementation
-const shuffle = array => {
-	for (let i = array.length - 1; i > 0; i--) {
-		const j = Math.floor(Math.random() * i);
-		const temp = array[i];
-		array[i] = array[j];
-		array[j] = temp;
-	}
-	return array;
-};
 
 let once = true;
 let count = 5;
@@ -45,16 +34,10 @@ export const moveMonsters = monsters =>
 			if (!turn) {
 				if (
 					positions.filter(pos =>
-						arrayEquals(
-							pos,
-							nextPositionFromDirection(current, nextMonster.pos)
-						)
+						arrayEquals(pos, nextFromDirection(current, nextMonster.pos))
 					).length > 0
 				) {
-					nextMonster.next = nextPositionFromDirection(
-						current,
-						nextMonster.pos
-					);
+					nextMonster.next = nextFromDirection(current, nextMonster.pos);
 					nextMonster.prevTween = nextMonster.tween;
 					nextMonster.tween = tweenFromDirection(current, nextMonster.pos);
 					return nextMonster;
@@ -66,10 +49,10 @@ export const moveMonsters = monsters =>
 				for (const dir of directions) {
 					if (
 						positions.filter(pos =>
-							arrayEquals(pos, nextPositionFromDirection(dir, nextMonster.pos))
+							arrayEquals(pos, nextFromDirection(dir, nextMonster.pos))
 						).length > 0
 					) {
-						nextMonster.next = nextPositionFromDirection(dir, nextMonster.pos);
+						nextMonster.next = nextFromDirection(dir, nextMonster.pos);
 						nextMonster.prevTween = nextMonster.tween;
 						nextMonster.tween = tweenFromDirection(dir, nextMonster.pos);
 						return nextMonster;
@@ -83,7 +66,7 @@ export const moveMonsters = monsters =>
 			nextMonster.tween = tweenFromDirection(current, monster.pos);
 			if (arrayEquals(nextMonster.tween, monster.next)) {
 				nextMonster.pos = monster.next;
-				nextMonster.next = nextPositionFromDirection(current, monster.pos);
+				nextMonster.next = nextFromDirection(current, monster.pos);
 			}
 			return nextMonster;
 		} else {
@@ -98,7 +81,7 @@ export const moveMonsters = monsters =>
 			nextMonster.prevTween = nextMonster.tween;
 			nextMonster.tween = tweenFromDirection(current, nextMonster.pos);
 			if (arrayEquals(nextMonster.tween, nextMonster.pos)) {
-				nextMonster.next = nextPositionFromDirection(dir, nextMonster.pos);
+				nextMonster.next = nextFromDirection(dir, nextMonster.pos);
 			}
 			return nextMonster;
 		}
@@ -112,10 +95,10 @@ export const moveMonsters = monsters =>
 		// 	for (const dir of directions) {
 		// 		if (
 		// 			positions.filter(pos =>
-		// 				arrayEquals(pos, nextPositionFromDirection(dir, nextMonster.pos))
+		// 				arrayEquals(pos, nextFromDirection(dir, nextMonster.pos))
 		// 			).length > 0
 		// 		) {
-		// 			nextMonster.next = nextPositionFromDirection(dir, nextMonster.pos);
+		// 			nextMonster.next = nextFromDirection(dir, nextMonster.pos);
 		// 			nextMonster.tween = tweenFromDirection(dir, nextMonster.tween);
 		// 			return nextMonster;
 		// 		}
@@ -128,11 +111,11 @@ export const moveMonsters = monsters =>
 		// 			positions.filter(pos =>
 		// 				arrayEquals(
 		// 					pos,
-		// 					nextPositionFromDirection(current, nextMonster.pos)
+		// 					nextFromDirection(current, nextMonster.pos)
 		// 				)
 		// 			).length > 0
 		// 		) {
-		// 			nextMonster.next = nextPositionFromDirection(
+		// 			nextMonster.next = nextFromDirection(
 		// 				current,
 		// 				nextMonster.pos
 		// 			);
@@ -147,10 +130,10 @@ export const moveMonsters = monsters =>
 		// 		for (const dir of directions) {
 		// 			if (
 		// 				positions.filter(pos =>
-		// 					arrayEquals(pos, nextPositionFromDirection(dir, nextMonster.pos))
+		// 					arrayEquals(pos, nextFromDirection(dir, nextMonster.pos))
 		// 				).length > 0
 		// 			) {
-		// 				nextMonster.next = nextPositionFromDirection(dir, nextMonster.pos);
+		// 				nextMonster.next = nextFromDirection(dir, nextMonster.pos);
 		// 				nextMonster.prevTween = nextMonster.tween;
 		// 				nextMonster.tween = tweenFromDirection(dir, nextMonster.pos);
 		// 				return nextMonster;
@@ -164,7 +147,7 @@ export const moveMonsters = monsters =>
 		// 	nextMonster.tween = tweenFromDirection(current, monster.pos);
 		// 	if (arrayEquals(nextMonster.tween, monster.next)) {
 		// 		nextMonster.pos = monster.next;
-		// 		nextMonster.next = nextPositionFromDirection(current, monster.pos);
+		// 		nextMonster.next = nextFromDirection(current, monster.pos);
 		// 	}
 		// 	return nextMonster;
 		// } else {
@@ -179,7 +162,7 @@ export const moveMonsters = monsters =>
 		// 	nextMonster.prevTween = nextMonster.tween;
 		// 	nextMonster.tween = tweenFromDirection(current, nextMonster.pos);
 		// 	if (arrayEquals(nextMonster.tween, nextMonster.pos)) {
-		// 		nextMonster.next = nextPositionFromDirection(dir, nextMonster.pos);
+		// 		nextMonster.next = nextFromDirection(dir, nextMonster.pos);
 		// 	}
 		// 	return nextMonster;
 		// }

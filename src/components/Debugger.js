@@ -9,7 +9,7 @@ const StyledDebugger = styled.div`
 	text-align: center;
 	background: #14141d;
 	top: -120px;
-	left: -140px;
+	left: -10px;
 	z-index: 90000;
 `;
 

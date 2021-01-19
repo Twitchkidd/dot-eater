@@ -1,6 +1,7 @@
 import { arrayEquals } from './general';
+import { positions } from '../components/GameBoard';
 
-export const nextPositionFromDirection = (dir, pos) => {
+export const nextFromDirection = (dir, pos) => {
 	if (dir === 'up') {
 		return [pos[0] - 40, pos[1]];
 	} else if (dir === 'down') {
@@ -40,4 +41,20 @@ export const movingDirection = (tween, prevTween) => {
 			return 'up';
 		}
 	}
+};
+
+export const isValidDirection = (player, dir) => {
+	const current = movingDirection(player.tween, player.prevTween);
+	const atJunction = arrayEquals(player.pos, player.next);
+	if (atJunction) {
+		return (
+			positions.filter(pos =>
+				arrayEquals(pos, nextFromDirection(dir, player.pos))
+			).length > 0
+		);
+	}
+	if (current === 'up' || current === 'down') {
+		return dir === 'up' || dir === 'down';
+	}
+	return dir === 'left' || dir === 'right';
 };

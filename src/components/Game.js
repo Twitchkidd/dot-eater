@@ -10,9 +10,6 @@ import Debugger from './Debugger';
 
 const Game = ({ onChangeScore, onGameOver }) => {
 	const [time, setTime] = useState(0);
-	// const [player, setPlayer] = useState(initialPlayer);
-	// const [dots, setDots] = useState(initialDots);
-	// const [monsters, setMonsters] = useState(initialMonsters);
 	const [sprites, setSprites] = useState({
 		player: initialPlayer,
 		dots: initialDots,
@@ -23,14 +20,11 @@ const Game = ({ onChangeScore, onGameOver }) => {
 	const left = useKeyPress(37);
 	const right = useKeyPress(39);
 	const tickAnimation = () => {
-		if (time % 5 === 0) {
-			setTime(time => time + 5);
-		}
+		setTime(time => time + 1);
 	};
 	useEffect(() => {
-		if (time > 10000) return; // ! Testing
+		if (time > 10000) return; // Testing
 		const { player, dots, monsters } = sprites;
-		// const nextMonsters = [...monsters];
 		const nextPlayer = movePlayer(up, down, left, right, { ...player });
 		const nextDots = checkDots(nextPlayer.tween, [...dots], onChangeScore);
 		const nextMonsters = moveMonsters([...monsters]);
@@ -40,13 +34,6 @@ const Game = ({ onChangeScore, onGameOver }) => {
 			dots: nextDots,
 			monsters: nextMonsters,
 		}));
-		// setSprites({
-		// 	...sprites,
-		// 	monsters: nextMonsters.map(monster => ({
-		// 		...monster,
-		// 		tween: tweenFromDirection('up', monster.tween),
-		// 	})),
-		// });
 	}, [time]);
 	useEffect(() => {
 		const t = timer(tickAnimation);
@@ -62,6 +49,16 @@ const Game = ({ onChangeScore, onGameOver }) => {
 			{monsters.map((monster, i) => (
 				<Monster pos={monster.tween} eaten={monster.eaten} key={i} />
 			))}
+			<Debugger>
+				<Debugger.Wrap>
+					<Debugger.Text>Player</Debugger.Text>
+					{Object.entries(player).map((keyVal, i) => (
+						<Debugger.Text key={i}>
+							{keyVal[0]} x:{keyVal[1][1]} y:{keyVal[1][0]}
+						</Debugger.Text>
+					))}
+				</Debugger.Wrap>
+			</Debugger>
 			{/* <Debugger>
 				{monsters.map((monster, i) => (
 					<Debugger.Wrap key={i}>

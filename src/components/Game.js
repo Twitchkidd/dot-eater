@@ -49,7 +49,7 @@ const Game = ({ onChangeScore, onGameOver }) => {
 			{monsters.map((monster, i) => (
 				<Monster pos={monster.tween} eaten={monster.eaten} key={i} />
 			))}
-			<Debugger>
+			{/* <Debugger>
 				<Debugger.Wrap>
 					<Debugger.Text>Player</Debugger.Text>
 					{Object.entries(player).map((keyVal, i) => (
@@ -58,7 +58,7 @@ const Game = ({ onChangeScore, onGameOver }) => {
 						</Debugger.Text>
 					))}
 				</Debugger.Wrap>
-			</Debugger>
+			</Debugger> */}
 			{/* <Debugger>
 				{monsters.map((monster, i) => (
 					<Debugger.Wrap key={i}>

@@ -19,19 +19,19 @@ export const movePlayer = (up, down, left, right, player) => {
 			[]
 		)
 	);
-	let second = false;
-	if (
-		arrayEquals(player.prevTween, [280, 395]) &&
-		arrayEquals(keysDown.sort(), ['left', 'right'].sort()) &&
-		second
-	)
-		debugger;
-	if (
-		arrayEquals(player.prevTween, [280, 395]) &&
-		arrayEquals(keysDown.sort(), ['left', 'right'].sort())
-	) {
-		second = true;
-	}
+	// let second = false;
+	// if (
+	// 	arrayEquals(player.prevTween, [280, 395]) &&
+	// 	arrayEquals(keysDown.sort(), ['left', 'right'].sort()) &&
+	// 	second
+	// )
+	// 	debugger;
+	// if (
+	// 	arrayEquals(player.prevTween, [280, 395]) &&
+	// 	arrayEquals(keysDown.sort(), ['left', 'right'].sort())
+	// ) {
+	// 	second = true;
+	// }
 	if (atJunction) {
 		for (const key of keysDown) {
 			if (isValidDirection(player, key)) {

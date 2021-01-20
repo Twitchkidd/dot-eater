@@ -43,18 +43,17 @@ export const movingDirection = (tween, prevTween) => {
 	}
 };
 
-export const isValidDirection = (player, dir) => {
-	const current = movingDirection(player.tween, player.prevTween);
-	const atJunction = arrayEquals(player.pos, player.next);
-	if (atJunction) {
-		return (
+export const isValidDirection = (sprite, dir, i) => {
+	if (i === 0) {
+		console.log(
 			positions.filter(pos =>
-				arrayEquals(pos, nextFromDirection(dir, player.pos))
-			).length > 0
+				arrayEquals(pos, nextFromDirection(dir, sprite.pos))
+			).length
 		);
 	}
-	if (current === 'up' || current === 'down') {
-		return dir === 'up' || dir === 'down';
-	}
-	return dir === 'left' || dir === 'right';
+	return (
+		positions.filter(pos =>
+			arrayEquals(pos, nextFromDirection(dir, sprite.pos))
+		).length > 0
+	);
 };

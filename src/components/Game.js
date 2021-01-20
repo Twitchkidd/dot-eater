@@ -6,7 +6,7 @@ import Player, { movePlayer } from './Player';
 import Dots, { checkDots } from './Dots';
 import Monster, { moveMonsters } from './Monster';
 import Debugger from './Debugger';
-// import { tweenFromDirection } from '../utils/movement';
+import { arrayEquals } from '../utils/general';
 
 const Game = ({ onChangeScore, onGameOver }) => {
 	const [time, setTime] = useState(0);
@@ -34,6 +34,16 @@ const Game = ({ onChangeScore, onGameOver }) => {
 			dots: nextDots,
 			monsters: nextMonsters,
 		}));
+		let lost = false;
+		nextMonsters.forEach(monster => {
+			if (arrayEquals(monster.tween, nextPlayer.tween)) {
+				lost = true;
+				onGameOver(false);
+			}
+		});
+		if (nextDots.filter(dot => !dot.eaten).length === 0 && !lost) {
+			onGameOver(true);
+		}
 	}, [time]);
 	useEffect(() => {
 		const t = timer(tickAnimation);

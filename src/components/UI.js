@@ -19,11 +19,13 @@ const StyledUIText = styled.p`
 		props.report
 			? `
 		line-height: 0;
+		margin-bottom: 10px;
 	`
 			: null}
 	color: #fefefe;
 	margin-right: 8px;
 	${props => props.titleText && 'text-decoration: underline;'}
+	${props => props.titleText && 'margin-bottom: 40px;'}
 `;
 
 const StyledUIWrapper = styled.div`

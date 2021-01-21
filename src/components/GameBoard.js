@@ -91,6 +91,7 @@ const StyledGameBoard = styled(motion.div)`
 	width: 720px;
 	background-image: url('./backdrop.png');
 	position: relative;
+	outline: 12px double var(--darker);
 `;
 
 const GameBoard = ({ children }) => {

@@ -18,8 +18,8 @@ const Global = createGlobalStyle`
     padding: 0;
     width: 100vw;
     height: 100vh;
-    color: #fefefe;
-    background: #14141d;
+    color: var(--lightest);
+    background: var(--darkest);
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
   }

@@ -8,6 +8,7 @@ import Global from './components/Global';
 
 const App = () => {
 	const [won, setWon] = useState(null);
+	const [lives, setLives] = useState(2);
 	const [score, setScore] = useState(0);
 	const handleChangeScore = delta => {
 		setScore(score => (score += delta));
@@ -35,6 +36,7 @@ const App = () => {
 					) : won === undefined ? (
 						<>
 							<Game
+								lives={lives}
 								onChangeScore={handleChangeScore}
 								onGameOver={handleGameOver}
 							/>

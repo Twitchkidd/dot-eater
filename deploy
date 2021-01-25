@@ -1,0 +1,11 @@
+#!/bin/sh
+
+echo "Switching to branch main"
+git checkout main
+
+echo "Building app"
+yarn build
+
+echo "Deploying files to server"
+rsync -avP build/ gareth@garethfield.website:/var/www/dot-eater/
+echo "Deployment complete"

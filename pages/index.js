@@ -3,19 +3,22 @@ import { connectToDatabase } from '../utils/mongodb';
 import Head from 'next/head';
 import Container from '../components/Container';
 import GameBoard from '../components/GameBoard';
+import LeaderBoard from '../components/LeaderBoard';
 import UI from '../components/UI';
-import Button from '../components/Button';
 import Game from '../components/Game';
 import Global from '../components/Global';
-import SignIn from '../components/SignIn';
+import Start from '../components/Start';
+import GameOver from '../components/GameOver';
 
 export default function Index({ isConnected }) {
 	const [won, setWon] = useState(null);
-	// const [lives, setLives] = useState(2);
 	const [score, setScore] = useState(0);
 	const handleChangeScore = delta => {
 		setScore(score => (score += delta));
 	};
+	// won of null is the before state
+	// won of undefined is playing
+	// won of true or false is game over
 	const handleStart = () => {
 		setScore(0);
 		setWon(undefined);
@@ -34,21 +37,9 @@ export default function Index({ isConnected }) {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<Container>
-				<GameBoard>
+				<GameBoard won={won}>
 					{won === null ? (
-						<UI>
-							{isConnected ? (
-								<h2 className='subtitle'>You are connected to MongoDB</h2>
-							) : (
-								<h2 className='subtitle'>
-									You are NOT connected to MongoDB. Check the{' '}
-									<code>README.md</code> for instructions.
-								</h2>
-							)}
-							<SignIn />
-							<UI.Text titleText>dot-eater!</UI.Text>
-							<Button start={handleStart}>Start</Button>
-						</UI>
+						<Start start={handleStart} />
 					) : won === undefined ? (
 						<>
 							<Game
@@ -62,13 +53,7 @@ export default function Index({ isConnected }) {
 							</UI>
 						</>
 					) : (
-						<UI>
-							<UI.Wrap>
-								<UI.Text report>{`${won ? 'You won!' : 'You lost!'}`}</UI.Text>
-								<UI.Text report>{`Score: ${score}`}</UI.Text>
-							</UI.Wrap>
-							<Button start={handleStart}>Play again!</Button>
-						</UI>
+						<GameOver won={won} score={score} handleStart={handleStart} />
 					)}
 				</GameBoard>
 			</Container>

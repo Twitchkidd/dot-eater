@@ -89,12 +89,13 @@ export const initialDots = initialDotPositions
 const StyledGameBoard = styled(motion.div)`
 	height: 720px;
 	width: 720px;
-	background-image: url('./backdrop.png');
+	background-image: ${props =>
+		props.start ? 'url(./fullBackdrop.png)' : "url('./backdrop.png')"};
 	position: relative;
 	outline: 12px double var(--darker);
 `;
 
-const GameBoard = ({ children }) => {
+const GameBoard = ({ children, props }) => {
 	const controls = useAnimation();
 	const wobble = () => {
 		controls.start({
@@ -108,7 +109,10 @@ const GameBoard = ({ children }) => {
 		});
 	};
 	return (
-		<StyledGameBoard animate={controls} onClick={wobble}>
+		<StyledGameBoard
+			start={props.won === null}
+			animate={controls}
+			onClick={wobble}>
 			{children}
 		</StyledGameBoard>
 	);

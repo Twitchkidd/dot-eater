@@ -43,7 +43,7 @@ export default function Index({ isConnected }) {
 					) : won === undefined ? (
 						<>
 							<Game
-								lives={lives}
+								// lives={lives}
 								onChangeScore={handleChangeScore}
 								onGameOver={handleGameOver}
 							/>

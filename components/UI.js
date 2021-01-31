@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 const StyledUI = styled.div`
@@ -14,7 +13,11 @@ const StyledUI = styled.div`
 `;
 
 const StyledUIText = styled.p`
-	font-size: ${props => (props.report ? '18px' : '36px')};
+	color: var(--lightest);
+	font-family: monospace;
+	text-align: center;
+	${props => (props.titleText ? null : `margin-right: 8px;`)}
+	font-size: ${props => (props.report ? '18px' : '32px')};
 	${props =>
 		props.report
 			? `
@@ -22,10 +25,6 @@ const StyledUIText = styled.p`
 		margin-bottom: 10px;
 	`
 			: null}
-	color: #fefefe;
-	margin-right: 8px;
-	${props => props.titleText && 'text-decoration: underline;'}
-	${props => props.titleText && 'margin-bottom: 40px;'}
 `;
 
 const StyledUIWrapper = styled.div`

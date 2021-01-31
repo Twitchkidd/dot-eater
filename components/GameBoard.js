@@ -90,12 +90,14 @@ const StyledGameBoard = styled(motion.div)`
 	height: 720px;
 	width: 720px;
 	background-image: ${props =>
-		props.start ? 'url(./fullBackdrop.png)' : "url('./backdrop.png')"};
+		props.startScreen === true
+			? 'url(./fullBackdrop.png)'
+			: "url('./backdrop.png')"};
 	position: relative;
 	outline: 12px double var(--darker);
 `;
 
-const GameBoard = ({ children, props }) => {
+const GameBoard = ({ children, won }) => {
 	const controls = useAnimation();
 	const wobble = () => {
 		controls.start({
@@ -110,7 +112,7 @@ const GameBoard = ({ children, props }) => {
 	};
 	return (
 		<StyledGameBoard
-			start={props.won === null}
+			startScreen={won === null ? true : false}
 			animate={controls}
 			onClick={wobble}>
 			{children}

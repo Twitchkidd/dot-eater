@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { arrayEquals } from '../utils/general';
 import Sprite from './Sprite';

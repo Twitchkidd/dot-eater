@@ -8,7 +8,7 @@ import GameScreen from '../components/GameScreen';
 import GameOverScreen from '../components/GameOverScreen';
 import Global from '../components/Global';
 
-const Index = () => {
+const Index = ({ leaderboard }) => {
 	const [won, setWon] = useState(null);
 	const [score, setScore] = useState(0);
 	const handleChangeScore = delta => {
@@ -46,10 +46,18 @@ const Index = () => {
 			) : (
 				<GameOverScreen won={won} score={score} handleStart={handleStart} />
 			)}
-			<LeaderBoard />
+			<LeaderBoard leaderboard={leaderboard} />
 			<Global />
 		</Container>
 	);
 };
 
 export default Index;
+
+export async function getServerSideProps(context) {
+	const res = await fetch('http://localhost:3001/api/db/getLeaderboard/');
+	const leaderboard = await res.json();
+	return {
+		props: { leaderboard: JSON.parse(JSON.stringify(leaderboard)) },
+	};
+}

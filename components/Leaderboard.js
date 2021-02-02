@@ -19,21 +19,28 @@ const Version = styled(Title)`
 	font-size: 18px;
 `;
 
-const Leaderboard = () => (
-	<Wrapper>
-		<Title>Leaderboard</Title>
-		{/* To be a versions.map(): */}
-		<Version>Version 1.1.2</Version>
-		<ol>
-			<li>Gareth - Score: 4200</li>
-		</ol>
-		<Version>Version 1.1.1</Version>
-		<ol>
-			<li>Lena - Score: 1080</li>
-			<li>Samuel - Score: 1060</li>
-			<li>Gareth - Score: 420</li>
-		</ol>
-	</Wrapper>
-);
+const Leaderboard = ({ leaderboard }) => {
+	const Versions = () =>
+		leaderboard.map((board, i) => (
+			<React.Fragment key={i}>
+				<Version>Version {board.version}</Version>
+				<ol>
+					{board.highScores
+						.sort((a, b) => b.score - a.score)
+						.map((score, j) => (
+							<li key={`${j} of ${i}`}>
+								{score.name} - Score: {score.score}
+							</li>
+						))}
+				</ol>
+			</React.Fragment>
+		));
+	return (
+		<Wrapper>
+			<Title>Leaderboard</Title>
+			<Versions />
+		</Wrapper>
+	);
+};
 
 export default Leaderboard;

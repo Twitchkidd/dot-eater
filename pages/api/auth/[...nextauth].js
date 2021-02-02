@@ -94,6 +94,7 @@ const options = {
 		// error: '/api/auth/error', // Error code passed in query string as ?error=
 		// verifyRequest: '/api/auth/verify-request', // Used for check email page
 		// newUser: null // If set, new users will be directed here on first sign in
+		newUser: '/setName',
 	},
 
 	// Callbacks are asynchronous functions you can use to control what happens

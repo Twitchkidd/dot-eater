@@ -1,6 +1,6 @@
 {
 	"name": "dot-eater",
-	"version": "1.1.1",
+	"version": "1.1.0",
 	"homepage": ".",
 	"scripts": {
 		"dev": "next dev -p 3001",

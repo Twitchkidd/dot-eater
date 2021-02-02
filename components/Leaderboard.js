@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-	min-width: 240px;
-	max-width: 30%;
+	margin: 0 auto;
+	width: 240px;
 	height: 720px;
 	border: thick double var(--darker);
 	display: flex;

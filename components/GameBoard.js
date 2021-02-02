@@ -89,6 +89,7 @@ export const initialDots = initialDotPositions
 const StyledGameBoard = styled(motion.div)`
 	height: 720px;
 	width: 720px;
+	grid-column-start: 2;
 	background-image: ${props =>
 		props.startScreen === true
 			? 'url(./fullBackdrop.png)'

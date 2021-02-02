@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Head from 'next/head';
 import Container from '../components/Container';
 import LeaderBoard from '../components/Leaderboard';
@@ -24,9 +25,9 @@ const Index = () => {
 	const handleGameOver = wonGame => {
 		setWon(wonGame);
 	};
-	useEffect(() => {
-		useGamepads(gamepads => setGamepads(gamepads));
-	}, []);
+	// useEffect(() => {
+	// 	useGamepads(gamepads => setGamepads(gamepads));
+	// }, []);
 	return (
 		<Container>
 			<Head>
@@ -34,10 +35,7 @@ const Index = () => {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			{won === null ? (
-				<>
-					<StartScreen start={handleStart} />
-					<LeaderBoard />
-				</>
+				<StartScreen start={handleStart} />
 			) : won === undefined ? (
 				<GameScreen
 					score={score}
@@ -46,11 +44,9 @@ const Index = () => {
 					onReset={handleReset}
 				/>
 			) : (
-				<>
-					<GameOverScreen won={won} score={score} handleStart={handleStart} />
-					<LeaderBoard />
-				</>
+				<GameOverScreen won={won} score={score} handleStart={handleStart} />
 			)}
+			<LeaderBoard />
 			<Global />
 		</Container>
 	);

@@ -17,6 +17,7 @@
 		"polished": "^4.1.0",
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",
+		"react-gamepads": "^1.0.0",
 		"sqlite3": "^5.0.1",
 		"styled-components": "^5.2.1"
 	},

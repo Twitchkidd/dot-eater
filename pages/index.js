@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Container from '../components/Container';
 import LeaderBoard from '../components/Leaderboard';
@@ -24,6 +24,9 @@ const Index = () => {
 	const handleGameOver = wonGame => {
 		setWon(wonGame);
 	};
+	useEffect(() => {
+		useGamepads(gamepads => setGamepads(gamepads));
+	}, []);
 	return (
 		<Container>
 			<Head>

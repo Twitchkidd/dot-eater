@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/client';
 import styled from 'styled-components';
 // import { motion, useAnimation } from 'framer-motion';
 import { useKeyPress } from '../hooks/useKeyPress';
@@ -102,8 +103,10 @@ const Radio = ({ selected, onChange, text, value }) => (
 	</RadioContainer>
 );
 
-const OptionsCard = ({ session, enterOption }) => {
+const OptionsCard = ({ enterOption }) => {
+	const [session, loading] = useSession();
 	const [selected, setSelected] = useState('play');
+	const [name, setName] = useState(null);
 	const enter = useKeyPress(13);
 	const up = useKeyPress(38);
 	const down = useKeyPress(40);
@@ -123,6 +126,17 @@ const OptionsCard = ({ session, enterOption }) => {
 			setSelected(selected !== 'play' ? 'play' : logActionId);
 		}
 	}, [up, down]);
+	useEffect(() => {
+		if (session) {
+			(async function getUserName() {
+				const res = await fetch(
+					`http://localhost:3001/api/db/getName?email=${session.user.email}`
+				);
+				const { name } = await res.json();
+				setName(name);
+			})();
+		}
+	}, [session]);
 	// useEffect(() => {
 	// 	controls.start({
 	// 		x: 120,
@@ -136,10 +150,13 @@ const OptionsCard = ({ session, enterOption }) => {
 	return (
 		// <Form animate={controls}>
 		<Form>
-			<WelcomeText>Welcome to `dot-eater`!</WelcomeText>
-			{session && (
+			<WelcomeText>
+				Welcome to `dot-eater`
+				{loading ? null : name ? ` ${name}` : null}!
+			</WelcomeText>
+			{/* {session && (
 				<SignedInText as='h1'>Signed in as {session.user.email}</SignedInText>
-			)}
+			)} */}
 			<Radio
 				value='play'
 				selected={selected === 'play'}

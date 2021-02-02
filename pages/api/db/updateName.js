@@ -11,14 +11,20 @@ export default async function updateName(req, res) {
 		res.send({
 			error: 'Wrong HTTP request!',
 		});
-	} else if (req.body.content.length <= 0) {
+	} else if (req.body.name.length <= 0) {
 		res.redirect(422, 'http://localhost:3001/setName');
 	} else {
 		const { db } = await connectToDatabase();
-		const updated = await db.users.updateOne(
-			{ email: req.session.user.email },
-			{ $set: { name: req.body.name }, $currentDate: { lastModified: true } }
-		);
-		res.json(updated);
+		const updated = await db
+			.collection('users')
+			.updateOne(
+				{ email: session.user.email },
+				{ $set: { name: req.body.name }, $currentDate: { lastModified: true } }
+			);
+		if (updated.result.nModified > 0) {
+			res.redirect('http://localhost:3001/');
+		} else {
+			res.redirect('http://localhost:3001/setName?error="notUpdated"');
+		}
 	}
 }

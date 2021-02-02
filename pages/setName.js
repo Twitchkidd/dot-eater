@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/client';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import Container from '../components/Container';
 
@@ -37,6 +38,8 @@ const AccessDenied = styled.h1`
 
 export default function SetName() {
 	const [session, loading] = useSession();
+	const router = useRouter();
+	const { error } = router.query;
 	// const [content, setContent] = useState();
 	// Fetch content from protected route
 	// useEffect(() => {
@@ -67,8 +70,9 @@ export default function SetName() {
 		<Container>
 			<Form method='post' action='/api/db/updateName'>
 				<div>
-					Welcome! Set your name (so we aren't putting your email on the
-					leaderboards!)
+					{error
+						? "Try setting your name again, something errored server-side and the database didn't update!"
+						: "Welcome! Set your name (so we aren't putting your email on the leaderboards!)"}
 				</div>
 				<label>
 					Name:
